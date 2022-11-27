@@ -25,7 +25,8 @@ public class MainActivity extends AppCompatActivity {
     private EditText key;
     private EditText encryptedMessage;
     private Button encryptButton;
-
+    private RadioGroup modesRadioGroup;
+    private String aesMode = "AES/CBC/ISO10126Padding";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,15 @@ public class MainActivity extends AppCompatActivity {
         key = findViewById(R.id.keyId);
         encryptedMessage = findViewById(R.id.encryptedMessageId);
         encryptButton = findViewById(R.id.encryptButtonId);
+        modesRadioGroup = findViewById(R.id.modes_rGroup);
+
+
+        modesRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int checkedRadioButton) {
+                modeChanger(checkedRadioButton);
+            }
+        });
 
         encryptButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
             byte[] plaintext = message.getText().toString().getBytes(StandardCharsets.UTF_8);
             SecretKeySpec secretKey = new SecretKeySpec(key.getText().toString().getBytes(StandardCharsets.UTF_8), "AES");
-            Cipher cipher = Cipher.getInstance("AES/CBC/ISO10126Padding");
+            Cipher cipher = Cipher.getInstance(aesMode);
             cipher.init(Cipher.ENCRYPT_MODE, secretKey);
             byte[] ciphertext = cipher.doFinal(plaintext);
             encryptedMessage.setText(Base64.encodeToString(ciphertext, Base64.DEFAULT));
@@ -69,4 +79,24 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+    private void modeChanger(int checkedRadioButton) {
+        encryptedMessage.setText("");
+
+        switch (checkedRadioButton) {
+            case R.id.cbc_mode:
+                aesMode = "AES/CBC/ISO10126Padding";
+                break;
+            case R.id.ecb_mode:
+                aesMode = "AES/ECB/PKCS5Padding";
+                break;
+        }
+    }
+
+    public void clearInputs() {
+        message.setText("");
+        key.setText("");
+        encryptedMessage.setText("");
+    }
+
 }
