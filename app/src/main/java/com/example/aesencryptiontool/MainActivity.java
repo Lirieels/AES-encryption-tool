@@ -6,11 +6,26 @@ import androidx.core.content.ContextCompat;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioGroup;
+import android.widget.Toast;
+
+import java.nio.charset.StandardCharsets;
+
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
 
 public class MainActivity extends AppCompatActivity {
+    private EditText message;
+    private EditText key;
+    private EditText encryptedMessage;
+    private Button encryptButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,5 +38,35 @@ public class MainActivity extends AppCompatActivity {
             window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);//
         }
         setContentView(R.layout.activity_main);
+
+        message = findViewById(R.id.messageId);
+        key = findViewById(R.id.keyId);
+        encryptedMessage = findViewById(R.id.encryptedMessageId);
+        encryptButton = findViewById(R.id.encryptButtonId);
+
+        encryptButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if ((message.getText().toString().equals(null) || message.getText().toString().equals("")) || (key.getText().toString().equals(null) || key.getText().toString().equals(""))) {
+                    Toast.makeText(getApplicationContext(), "Message or secret can't be empty", Toast.LENGTH_LONG).show();
+                } else {
+                    encryptMessage();
+                }
+            }
+        });
+    }
+
+    private void encryptMessage() {
+        try {
+
+            byte[] plaintext = message.getText().toString().getBytes(StandardCharsets.UTF_8);
+            SecretKeySpec secretKey = new SecretKeySpec(key.getText().toString().getBytes(StandardCharsets.UTF_8), "AES");
+            Cipher cipher = Cipher.getInstance("AES/CBC/ISO10126Padding");
+            cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+            byte[] ciphertext = cipher.doFinal(plaintext);
+            encryptedMessage.setText(Base64.encodeToString(ciphertext, Base64.DEFAULT));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

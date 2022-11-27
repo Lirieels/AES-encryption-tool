@@ -104,7 +104,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/layout_bg"
+                    android:background="@drawable/border_radius"
                     android:gravity="top"
                     android:hint="Message"
                     android:lines="5"
@@ -132,7 +132,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/layout_bg"
+                    android:background="@drawable/border_radius"
                     android:hint="Secret Key"
                     android:padding="10dp"
                     android:textColor="@color/lightGray"
@@ -180,6 +180,7 @@
                         android:buttonTint="@color/green"
                         android:checked="false"
                         android:text="ECB"
+                        android:textColor="@color/black"
                         android:textSize="20dp"></RadioButton>
                 </RadioGroup>
 
@@ -203,7 +204,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/layout_bg"
+                    android:background="@drawable/border_radius"
                     android:gravity="top"
                     android:hint="Encrypted message"
                     android:lines="5"
@@ -219,11 +220,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/layout_bg"
-                android:backgroundTint="@color/green"
                 android:text="Encrypt"
                 android:textColor="@color/white"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/border_radius"
+                android:backgroundTint="@color/green"
                 android:textSize="25dp" />
 
         </LinearLayout>
