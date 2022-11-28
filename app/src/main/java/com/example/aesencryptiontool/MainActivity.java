@@ -12,6 +12,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -26,7 +27,12 @@ public class MainActivity extends AppCompatActivity {
     private EditText encryptedMessage;
     private Button encryptButton;
     private RadioGroup modesRadioGroup;
-    private String aesMode = "AES/CBC/ISO10126Padding";
+    private RadioGroup paddingsRadioGroup;
+    private String aesMode = "AES/CBC/";
+    private String aesPadding = "NoPadding";
+    private RadioButton ISO10126P;
+    private RadioButton PKCS5P;
+    private RadioButton noPadding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +51,10 @@ public class MainActivity extends AppCompatActivity {
         encryptedMessage = findViewById(R.id.encryptedMessageId);
         encryptButton = findViewById(R.id.encryptButtonId);
         modesRadioGroup = findViewById(R.id.modes_rGroup);
+        paddingsRadioGroup = findViewById(R.id.paddings_rGroup);
+        ISO10126P = findViewById(R.id.iso10126P);
+        PKCS5P = findViewById(R.id.pkcs5p);
+        noPadding = findViewById(R.id.noP);
 
 
         modesRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -53,7 +63,12 @@ public class MainActivity extends AppCompatActivity {
                 modeChanger(checkedRadioButton);
             }
         });
-
+        paddingsRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int checkedPaddingRadioB) {
+                paddingsChanger(checkedPaddingRadioB);
+            }
+        });
         encryptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
 
             byte[] plaintext = message.getText().toString().getBytes(StandardCharsets.UTF_8);
             SecretKeySpec secretKey = new SecretKeySpec(key.getText().toString().getBytes(StandardCharsets.UTF_8), "AES");
-            Cipher cipher = Cipher.getInstance(aesMode);
+            Cipher cipher = Cipher.getInstance(aesMode + aesPadding);
             cipher.init(Cipher.ENCRYPT_MODE, secretKey);
             byte[] ciphertext = cipher.doFinal(plaintext);
             encryptedMessage.setText(Base64.encodeToString(ciphertext, Base64.DEFAULT));
@@ -82,21 +97,67 @@ public class MainActivity extends AppCompatActivity {
 
     private void modeChanger(int checkedRadioButton) {
         encryptedMessage.setText("");
-
+        paddingsVisibility(checkedRadioButton);
         switch (checkedRadioButton) {
             case R.id.cbc_mode:
-                aesMode = "AES/CBC/ISO10126Padding";
+                aesMode = "AES/CBC/";
                 break;
             case R.id.ecb_mode:
-                aesMode = "AES/ECB/PKCS5Padding";
+                aesMode = "AES/ECB/";
+                break;
+            case R.id.cfb_mode:
+                aesMode = "AES/CFB/";
+                break;
+            case R.id.ctr_mode:
+                aesMode = "AES/CTR/";
+                break;
+            case R.id.cts_mode:
+                aesMode = "AES/CTS/";
+                break;
+            case R.id.gcm_mode:
+                aesMode = "AES/GCM/";
+                break;
+            case R.id.ofb_mode:
+                aesMode = "AES/OFB/";
                 break;
         }
     }
 
-    public void clearInputs() {
+    private void paddingsChanger(int checkedRadioPaddingButton) {
+        encryptedMessage.setText("");
+
+        switch (checkedRadioPaddingButton) {
+            case R.id.iso10126P:
+                aesPadding = "ISO10126Padding";
+                break;
+            case R.id.noP:
+                aesPadding = "NoPadding";
+                break;
+            case R.id.pkcs5p:
+                aesPadding = "PKCS5Padding";
+                break;
+        }
+
+    }
+
+    private void clearInputs() {
         message.setText("");
         key.setText("");
         encryptedMessage.setText("");
+    }
+
+    private void paddingsVisibility(int aesModeId) {
+        if (aesModeId != R.id.gcm_mode) {
+            ISO10126P.setVisibility(View.VISIBLE);
+            PKCS5P.setVisibility(View.VISIBLE);
+            ISO10126P.setChecked(true);
+            aesPadding = "NoPadding";
+        } else {
+            ISO10126P.setVisibility(View.GONE);
+            PKCS5P.setVisibility(View.GONE);
+            noPadding.setChecked(true);
+            aesPadding = "NoPadding";
+        }
     }
 
 }
