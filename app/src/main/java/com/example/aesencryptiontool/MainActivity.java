@@ -150,14 +150,13 @@ public class MainActivity extends AppCompatActivity {
         if (aesModeId != R.id.gcm_mode) {
             ISO10126P.setVisibility(View.VISIBLE);
             PKCS5P.setVisibility(View.VISIBLE);
-            ISO10126P.setChecked(true);
-            aesPadding = "NoPadding";
         } else {
             ISO10126P.setVisibility(View.GONE);
             PKCS5P.setVisibility(View.GONE);
-            noPadding.setChecked(true);
-            aesPadding = "NoPadding";
         }
+        noPadding.setChecked(true);
+        aesPadding = "NoPadding";
+
     }
 
 }

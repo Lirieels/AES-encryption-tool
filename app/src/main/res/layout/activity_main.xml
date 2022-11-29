@@ -109,7 +109,8 @@
                     android:hint="Message"
                     android:lines="5"
                     android:padding="10dp"
-                    android:textColor="@color/lightGray"
+                    android:textColorHint="@color/lightGray"
+                    android:textColor="@color/black"
                     android:textSize="20dp" />
 
             </LinearLayout>
@@ -135,7 +136,8 @@
                     android:background="@drawable/border_radius"
                     android:hint="Secret Key"
                     android:padding="10dp"
-                    android:textColor="@color/lightGray"
+                    android:textColorHint="@color/lightGray"
+                    android:textColor="@color/black"
                     android:textSize="20dp" />
 
 
@@ -158,6 +160,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fillViewport="true"
+                    android:scrollbars="none"
                     android:orientation="horizontal">
 
                     <RadioGroup
@@ -329,7 +332,8 @@
                     android:hint="Encrypted message"
                     android:lines="5"
                     android:padding="10dp"
-                    android:textColor="@color/lightGray"
+                    android:textColorHint="@color/lightGray"
+                    android:textColor="@color/black"
                     android:textSize="20dp" />
 
 
