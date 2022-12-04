@@ -9,6 +9,8 @@ import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.view.View;
 import android.view.Window;
@@ -39,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private RadioButton PKCS5P;
     private RadioButton noPadding;
     private ImageView copyToClipboardButton;
+    private TextView keyValidation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
         noPadding.setVisibility(View.GONE);
         ISO10126P.setChecked(true);
         encryptedMessage.setTextIsSelectable(true);
+        keyValidation = findViewById(R.id.key_validation);
         copyToClipboardButton.setVisibility(View.GONE);
         modesRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -83,7 +87,11 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if ((message.getText().toString().equals(null) || message.getText().toString().equals("")) || (key.getText().toString().equals(null) || key.getText().toString().equals(""))) {
                     Toast.makeText(getApplicationContext(), "Message or secret can't be empty", Toast.LENGTH_LONG).show();
-                } else {
+                }
+                else if (key.getText().length() != 16 && key.getText().length() != 24 && key.getText().length() != 32) {
+                    Toast.makeText(getApplicationContext(), "The secret key should be 16, 24 or 32 bits", Toast.LENGTH_LONG).show();
+                }
+                else {
                     encryptMessage();
                 }
             }
@@ -94,6 +102,25 @@ public class MainActivity extends AppCompatActivity {
                 copyEncryptedMessageToClipBoard();
             }
         });
+        key.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                String keyValidationLength = key.length() <= 16 ? "16" : (key.length() <= 24 ? "24" : "32");
+                keyValidation.setText(key.length() + "/" + keyValidationLength);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+
     }
 
     private void encryptMessage() {
@@ -165,15 +192,13 @@ public class MainActivity extends AppCompatActivity {
             noPadding.setVisibility(View.VISIBLE);
             noPadding.setChecked(true);
             aesPadding = "NoPadding";
-        }
-        else if(aesModeId == R.id.cts_mode || aesModeId == R.id.ecb_mode || aesModeId == R.id.cbc_mode){
+        } else if (aesModeId == R.id.cts_mode || aesModeId == R.id.ecb_mode || aesModeId == R.id.cbc_mode) {
             ISO10126P.setVisibility(View.VISIBLE);
             PKCS5P.setVisibility(View.VISIBLE);
             noPadding.setVisibility(View.GONE);
             ISO10126P.setChecked(true);
             aesPadding = "ISO10126Padding";
-        }
-        else {
+        } else {
             ISO10126P.setVisibility(View.VISIBLE);
             PKCS5P.setVisibility(View.VISIBLE);
             noPadding.setVisibility(View.VISIBLE);
@@ -184,8 +209,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void copyEncryptedMessageToClipBoard(){
-        ClipboardManager clipboard = (ClipboardManager)getApplicationContext().getSystemService(Context.CLIPBOARD_SERVICE);
+    private void copyEncryptedMessageToClipBoard() {
+        ClipboardManager clipboard = (ClipboardManager) getApplicationContext().getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("Encrypted message", encryptedMessage.getText());
         clipboard.setPrimaryClip(clip);
         Toast.makeText(getApplicationContext(), "Copied to clipboard", Toast.LENGTH_SHORT).show();
