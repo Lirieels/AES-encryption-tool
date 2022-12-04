@@ -139,6 +139,14 @@
                     android:textColorHint="@color/lightGray"
                     android:textColor="@color/black"
                     android:textSize="20dp" />
+                <TextView
+                    android:id="@+id/key_validation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/red"
+                    android:textSize="20dp"
+
+                    />
 
 
             </LinearLayout>

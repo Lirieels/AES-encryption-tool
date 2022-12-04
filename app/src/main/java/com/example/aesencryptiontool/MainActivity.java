@@ -6,6 +6,8 @@ import androidx.core.content.ContextCompat;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.view.View;
 import android.view.Window;
@@ -14,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.nio.charset.StandardCharsets;
@@ -33,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private RadioButton ISO10126P;
     private RadioButton PKCS5P;
     private RadioButton noPadding;
+    private TextView keyValidation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         ISO10126P = findViewById(R.id.iso10126P);
         PKCS5P = findViewById(R.id.pkcs5p);
         noPadding = findViewById(R.id.noP);
+        keyValidation = findViewById(R.id.key_validation);
 
 
         modesRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -74,9 +79,28 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if ((message.getText().toString().equals(null) || message.getText().toString().equals("")) || (key.getText().toString().equals(null) || key.getText().toString().equals(""))) {
                     Toast.makeText(getApplicationContext(), "Message or secret can't be empty", Toast.LENGTH_LONG).show();
+                } else if (key.getText().length() != 16 || key.getText().length() != 24 || key.getText().length() != 32) {
+                    Toast.makeText(getApplicationContext(), "The secret key should be 16, 24 or 32 bits", Toast.LENGTH_LONG).show();
                 } else {
                     encryptMessage();
                 }
+            }
+        });
+        key.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                String keyValidationLength = key.length() <= 16 ? "16" : (key.length() <= 24 ? "24" : "32");
+                keyValidation.setText(key.length() + "/" + keyValidationLength);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
             }
         });
     }
