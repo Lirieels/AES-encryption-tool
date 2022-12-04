@@ -64,26 +64,26 @@
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+<!--                <LinearLayout-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:orientation="vertical">-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Decrypt"
-                        android:textColor="@color/black"
-                        android:textSize="20dp"
-                        android:textStyle="bold" />
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="Decrypt"-->
+<!--                        android:textColor="@color/black"-->
+<!--                        android:textSize="20dp"-->
+<!--                        android:textStyle="bold" />-->
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="2dp"
-                        android:background="@color/green"
-                        android:visibility="gone" />
+<!--                    <View-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="2dp"-->
+<!--                        android:background="@color/green"-->
+<!--                        android:visibility="gone" />-->
 
-                </LinearLayout>
+<!--                </LinearLayout>-->
             </LinearLayout>
 
             <LinearLayout
@@ -109,8 +109,8 @@
                     android:hint="Message"
                     android:lines="5"
                     android:padding="10dp"
-                    android:textColorHint="@color/lightGray"
                     android:textColor="@color/black"
+                    android:textColorHint="@color/lightGray"
                     android:textSize="20dp" />
 
             </LinearLayout>
@@ -136,8 +136,8 @@
                     android:background="@drawable/border_radius"
                     android:hint="Secret Key"
                     android:padding="10dp"
-                    android:textColorHint="@color/lightGray"
                     android:textColor="@color/black"
+                    android:textColorHint="@color/lightGray"
                     android:textSize="20dp" />
 
 
@@ -160,8 +160,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fillViewport="true"
-                    android:scrollbars="none"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:scrollbars="none">
 
                     <RadioGroup
                         android:id="@+id/modes_rGroup"
@@ -271,40 +271,38 @@
                     android:id="@+id/paddings_rGroup"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    >
+                    android:orientation="horizontal">
+
                     <RadioButton
                         android:id="@+id/noP"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="NoP"
-                        android:textColor="@color/black"
-                        android:textSize="20dp"
+                        android:layout_marginEnd="10dp"
                         android:buttonTint="@color/green"
                         android:checked="true"
-                        android:layout_marginEnd="10dp"
-                        />
+                        android:text="NoP"
+                        android:textColor="@color/black"
+                        android:textSize="20dp" />
+
                     <RadioButton
                         android:id="@+id/iso10126P"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:buttonTint="@color/green"
                         android:text="ISO10126P"
                         android:textColor="@color/black"
-                        android:textSize="20dp"
-                        android:buttonTint="@color/green"
-                          android:layout_marginEnd="10dp"
-                        />
+                        android:textSize="20dp" />
 
                     <RadioButton
                         android:id="@+id/pkcs5p"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:buttonTint="@color/green"
                         android:text="PKCS5P"
                         android:textColor="@color/black"
-                        android:textSize="20dp"
-                        android:buttonTint="@color/green"
-                        android:layout_marginEnd="10dp"
-                        />
+                        android:textSize="20dp" />
                 </RadioGroup>
             </LinearLayout>
 
@@ -314,15 +312,27 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="Encrypted message"
-                    android:textColor="@color/black"
-                    android:textSize="20dp" />
+                    android:layout_height="wrap_content">
 
-                <EditText
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Encrypted message"
+                        android:textColor="@color/black"
+                        android:layout_weight="1"
+                        android:textSize="20dp" />
+                    <ImageView
+                        android:id="@+id/copyToClipboardButton"
+                        android:layout_gravity="bottom"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_clipboard"/>
+                </LinearLayout>
+
+                <TextView
                     android:id="@+id/encryptedMessageId"
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
@@ -332,8 +342,8 @@
                     android:hint="Encrypted message"
                     android:lines="5"
                     android:padding="10dp"
-                    android:textColorHint="@color/lightGray"
                     android:textColor="@color/black"
+                    android:textColorHint="@color/lightGray"
                     android:textSize="20dp" />
 
 
