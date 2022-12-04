@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Message or secret can't be empty", Toast.LENGTH_LONG).show();
                 }
                 else if (key.getText().length() != 16 && key.getText().length() != 24 && key.getText().length() != 32) {
-                    Toast.makeText(getApplicationContext(), "The secret key should be 16, 24 or 32 bits", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "The secret key should be 16, 24 or 32 characters long", Toast.LENGTH_LONG).show();
                 }
                 else {
                     encryptMessage();
